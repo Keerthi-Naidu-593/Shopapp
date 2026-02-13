@@ -16,11 +16,14 @@ public class MainFrame extends JFrame {
 
 CartPanel cartPanel = new CartPanel(cart);
 ProductPanel productPanel = new ProductPanel(cart, cartPanel);
+OrderHistoryPanel historyPanel = new OrderHistoryPanel();
+
 cartPanel.setProductPanel(productPanel);
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Products", productPanel);
         tabs.addTab("Cart", cartPanel);
+        tabs.addTab("Order History", historyPanel);
 
         add(tabs);
 

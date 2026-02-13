@@ -1,6 +1,7 @@
 package shopapp.ui;
 
 import shopapp.model.CartItem;
+import shopapp.dao.ProductDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +28,8 @@ public class CartPanel extends JPanel {
         model.addColumn("Total");
 
         table = new JTable(model);
+        table.setRowHeight(30);
+
         // Buttons
 JButton minusBtn = new JButton("-");
 minusBtn.addActionListener(e -> decreaseQuantity());
@@ -155,8 +158,14 @@ public void refreshCart() {
     );
 
     if (choice == JOptionPane.YES_OPTION) {
+        ProductDAO dao = new ProductDAO();
+
+       for (CartItem item : cart) {
+        dao.saveOrder(item);
+}
 
         reduceStockInDB();
+       
         cart.clear();
         refreshCart();
 

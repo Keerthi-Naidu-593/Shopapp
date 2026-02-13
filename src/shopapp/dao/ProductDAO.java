@@ -6,6 +6,7 @@ package shopapp.dao;
 
 import shopapp.db.DBConnection;
 import shopapp.model.Product;
+import shopapp.model.CartItem;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,4 +39,24 @@ public class ProductDAO {
 
         return products;
     }
+    public void saveOrder(CartItem item) {
+
+    String sql = "INSERT INTO orders(product_id, product_name, price, quantity, total) VALUES (?, ?, ?, ?, ?)";
+
+    try (Connection con = DBConnection.getConnection();
+         PreparedStatement pst = con.prepareStatement(sql)) {
+
+        pst.setInt(1, item.getId());
+        pst.setString(2, item.getName());
+        pst.setDouble(3, item.getPrice());
+        pst.setInt(4, item.getQuantity());
+        pst.setDouble(5, item.getPrice() * item.getQuantity());
+
+        pst.executeUpdate();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 }

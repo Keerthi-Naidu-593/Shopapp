@@ -35,6 +35,7 @@ public ProductPanel(ArrayList<CartItem> cart, CartPanel cartPanel) {
         model.addColumn("Stock");
 
         table = new JTable(model);
+        table.setRowHeight(30);
 
         JButton addToCartBtn = new JButton("Add To Cart");
         addToCartBtn.addActionListener(e -> addToCart());
