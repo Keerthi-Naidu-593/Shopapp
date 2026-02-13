@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class CartPanel extends JPanel {
+    private JLabel totalLabel;
 
     JTable table;
     DefaultTableModel model;
@@ -26,29 +27,42 @@ public class CartPanel extends JPanel {
         model.addColumn("Total");
 
         table = new JTable(model);
+        // Buttons
+JButton minusBtn = new JButton("-");
+minusBtn.addActionListener(e -> decreaseQuantity());
 
-        JButton refreshBtn = new JButton("Refresh Cart");
-        refreshBtn.addActionListener(e -> loadCart());
+JButton plusBtn = new JButton("+");
+plusBtn.addActionListener(e -> increaseQuantity());
 
-        add(new JScrollPane(table), BorderLayout.CENTER);
-        add(refreshBtn, BorderLayout.SOUTH);
-        JButton checkoutBtn = new JButton("Checkout");
-        checkoutBtn.addActionListener(e -> checkout());
-        add(checkoutBtn, BorderLayout.NORTH);
-        JButton removeBtn = new JButton("Remove Selected Item");
-        removeBtn.addActionListener(e -> removeItem());
-        add(removeBtn, BorderLayout.WEST);
-        JButton plusBtn = new JButton("+");
-        plusBtn.addActionListener(e -> increaseQuantity());
+JButton removeBtn = new JButton("Remove");
+removeBtn.addActionListener(e -> removeItem());
 
-        JButton minusBtn = new JButton("-");
-        minusBtn.addActionListener(e -> decreaseQuantity());
+JButton checkoutBtn = new JButton("Checkout");
+checkoutBtn.addActionListener(e -> checkout());
 
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.add(plusBtn);
-         bottomPanel.add(minusBtn);
+// Total Label
+totalLabel = new JLabel("Grand Total: ₹0.0");
+totalLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
-add(bottomPanel, BorderLayout.EAST);
+// Left side button panel
+JPanel leftPanel = new JPanel();
+leftPanel.add(minusBtn);
+leftPanel.add(plusBtn);
+leftPanel.add(removeBtn);
+leftPanel.add(checkoutBtn);
+
+// Bottom panel layout
+JPanel bottomPanel = new JPanel(new BorderLayout());
+bottomPanel.add(leftPanel, BorderLayout.WEST);
+bottomPanel.add(totalLabel, BorderLayout.EAST);
+
+// Add components
+add(new JScrollPane(table), BorderLayout.CENTER);
+add(bottomPanel, BorderLayout.SOUTH);
+
+        
+
+
 
 
     }
@@ -69,19 +83,30 @@ add(bottomPanel, BorderLayout.EAST);
             });
         }
     }
-    public void refreshCart() {
-    model.setRowCount(0);   // clear table
+   
+public void refreshCart() {
+
+    model.setRowCount(0);
+
+    double grandTotal = 0;
 
     for (CartItem item : cart) {
+
+        double itemTotal = item.getPrice() * item.getQuantity();
+        grandTotal += itemTotal;
+
         model.addRow(new Object[]{
-            item.getId(),
-            item.getName(),
-            item.getPrice(),
-            item.getQuantity(),
-            item.getPrice() * item.getQuantity()
+                item.getId(),
+                item.getName(),
+                item.getPrice(),
+                item.getQuantity(),
+                itemTotal
         });
     }
+
+    totalLabel.setText("Grand Total: ₹" + grandTotal);
 }
+
     private void removeItem() {
 
     int row = table.getSelectedRow();
