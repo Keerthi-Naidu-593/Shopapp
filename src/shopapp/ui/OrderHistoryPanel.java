@@ -22,7 +22,13 @@ public class OrderHistoryPanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        model = new DefaultTableModel();
+       model = new DefaultTableModel() {
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;   // no cell editable
+    }
+};
+
         model.addColumn("Order ID");
         model.addColumn("Product ID");
         model.addColumn("Name");
@@ -32,7 +38,12 @@ public class OrderHistoryPanel extends JPanel {
         model.addColumn("Date");
 
         table = new JTable(model);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(30);
+        table.setBackground(Color.WHITE);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(180, 180, 180));
+        table.setSelectionBackground(new Color(184, 207, 229));
 
         JButton refreshBtn = new JButton("Refresh Orders");
         refreshBtn.addActionListener(e -> loadOrders());

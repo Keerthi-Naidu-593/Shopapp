@@ -19,8 +19,16 @@ public class CartPanel extends JPanel {
 
         this.cart = cart;
         setLayout(new BorderLayout());
-        
-        model = new DefaultTableModel();
+
+       setBackground(new Color(245, 247, 250));
+
+        model = new DefaultTableModel() {
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;   // no cell editable
+    }
+};
+
         model.addColumn("ID");
         model.addColumn("Name");
         model.addColumn("Price");
@@ -28,10 +36,18 @@ public class CartPanel extends JPanel {
         model.addColumn("Total");
 
         table = new JTable(model);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(30);
+        table.setBackground(Color.WHITE);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(180, 180, 180));
+        table.setSelectionBackground(new Color(184, 207, 229));
+        table.setOpaque(false);
+        
 
         // Buttons
 JButton minusBtn = new JButton("-");
+
 minusBtn.addActionListener(e -> decreaseQuantity());
 
 JButton plusBtn = new JButton("+");
@@ -43,9 +59,23 @@ removeBtn.addActionListener(e -> removeItem());
 JButton checkoutBtn = new JButton("Checkout");
 checkoutBtn.addActionListener(e -> checkout());
 
+Dimension btnSize = new Dimension(100, 35);
+
+minusBtn.setPreferredSize(btnSize);
+plusBtn.setPreferredSize(btnSize);
+removeBtn.setPreferredSize(btnSize);
+checkoutBtn.setPreferredSize(btnSize);
+
+minusBtn.setFocusPainted(false);
+plusBtn.setFocusPainted(false);
+removeBtn.setFocusPainted(false);
+checkoutBtn.setFocusPainted(false);
+
 // Total Label
 totalLabel = new JLabel("Grand Total: ₹0.0");
 totalLabel.setFont(new Font("Arial", Font.BOLD, 14));
+totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
+totalLabel.setForeground(new Color(40, 40, 40));
 
 // Left side button panel
 JPanel leftPanel = new JPanel();
@@ -58,6 +88,8 @@ leftPanel.add(checkoutBtn);
 JPanel bottomPanel = new JPanel(new BorderLayout());
 bottomPanel.add(leftPanel, BorderLayout.WEST);
 bottomPanel.add(totalLabel, BorderLayout.EAST);
+bottomPanel.setBackground(new Color(230, 235, 240));
+leftPanel.setBackground(new Color(230, 235, 240));
 
 // Add components
 add(new JScrollPane(table), BorderLayout.CENTER);

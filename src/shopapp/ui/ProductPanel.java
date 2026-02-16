@@ -26,22 +26,37 @@ public ProductPanel(ArrayList<CartItem> cart, CartPanel cartPanel) {
     this.cart = cart;
     this.cartPanel = cartPanel;
 
-        setLayout(new BorderLayout());
+       setLayout(new BorderLayout());
 
-        model = new DefaultTableModel();
+        setOpaque(false);
+        
+        //setBackground(new Color(245, 247, 250));
+
+        model = new DefaultTableModel() {
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;   // no cell editable
+    }
+};
+
         model.addColumn("ID");
         model.addColumn("Name");
         model.addColumn("Price");
         model.addColumn("Stock");
 
         table = new JTable(model);
+        table.getTableHeader().setReorderingAllowed(false);
         table.setRowHeight(30);
+        table.setBackground(Color.WHITE);
+        table.setShowGrid(true);
+        table.setGridColor(new Color(180, 180, 180));
+        table.setSelectionBackground(new Color(184, 207, 229));
 
         JButton addToCartBtn = new JButton("Add To Cart");
         addToCartBtn.addActionListener(e -> addToCart());
 
-        add(new JScrollPane(table), BorderLayout.CENTER);
-        add(addToCartBtn, BorderLayout.SOUTH);
+       add(new JScrollPane(table), BorderLayout.CENTER);
+       add(addToCartBtn, BorderLayout.SOUTH);
 
         loadProducts();
     }

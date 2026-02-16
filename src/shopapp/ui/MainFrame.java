@@ -24,7 +24,7 @@ cartPanel.setProductPanel(productPanel);
         tabs.addTab("Products", productPanel);
         tabs.addTab("Cart", cartPanel);
         tabs.addTab("Order History", historyPanel);
-
+       
         add(tabs);
 
         setTitle("Shop App");
