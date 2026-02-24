@@ -12,13 +12,19 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+
 
 public class OrderHistoryPanel extends JPanel {
 
     JTable table;
     DefaultTableModel model;
 
-    public OrderHistoryPanel() {
+    private int userId;
+
+public OrderHistoryPanel(int userId) {
+    this.userId = userId;
+
 
         setLayout(new BorderLayout());
 
@@ -54,29 +60,35 @@ public class OrderHistoryPanel extends JPanel {
         loadOrders();
     }
 
-    private void loadOrders() {
+    public void loadOrders() {
 
-        model.setRowCount(0);
+    model.setRowCount(0);
 
-        try (Connection con = DBConnection.getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM orders")) {
+    try (Connection con = DBConnection.getConnection();
+         PreparedStatement pst = con.prepareStatement(
+                 "SELECT * FROM orders WHERE user_id = ?")) {
 
-            while (rs.next()) {
+        pst.setInt(1, userId);
 
-                model.addRow(new Object[]{
-                        rs.getInt("order_id"),
-                        rs.getInt("product_id"),
-                        rs.getString("product_name"),
-                        rs.getDouble("price"),
-                        rs.getInt("quantity"),
-                        rs.getDouble("total"),
-                        rs.getTimestamp("order_date")
-                });
-            }
+        ResultSet rs = pst.executeQuery();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (rs.next()) {
+
+            model.addRow(new Object[]{
+                    rs.getInt("order_id"),
+                    rs.getInt("product_id"),
+                    rs.getString("product_name"),
+                    rs.getDouble("price"),
+                    rs.getInt("quantity"),
+                    rs.getDouble("total"),
+                    rs.getTimestamp("order_date")
+            });
         }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
+     
 }

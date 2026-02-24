@@ -39,9 +39,11 @@ public class ProductDAO {
 
         return products;
     }
-    public void saveOrder(CartItem item) {
+    public void saveOrder(CartItem item, int userId)
+ {
 
-    String sql = "INSERT INTO orders(product_id, product_name, price, quantity, total) VALUES (?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO orders (product_id, product_name, price, quantity, total, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+
 
     try (Connection con = DBConnection.getConnection();
          PreparedStatement pst = con.prepareStatement(sql)) {
@@ -51,7 +53,7 @@ public class ProductDAO {
         pst.setDouble(3, item.getPrice());
         pst.setInt(4, item.getQuantity());
         pst.setDouble(5, item.getPrice() * item.getQuantity());
-
+        pst.setInt(6, userId);
         pst.executeUpdate();
 
     } catch (Exception e) {

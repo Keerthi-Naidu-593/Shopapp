@@ -10,13 +10,16 @@ import java.util.ArrayList;
 
 public class CartPanel extends JPanel {
     private JLabel totalLabel;
+    private int userId;
 
     JTable table;
     DefaultTableModel model;
     ArrayList<CartItem> cart;
     private ProductPanel productPanel;
-    public CartPanel(ArrayList<CartItem> cart) {
-
+    private OrderHistoryPanel historyPanel;
+    public CartPanel(ArrayList<CartItem> cart, int userId, OrderHistoryPanel historyPanel) {
+    this.userId = userId;
+    this.historyPanel = historyPanel;
         this.cart = cart;
         setLayout(new BorderLayout());
 
@@ -193,7 +196,7 @@ public void refreshCart() {
         ProductDAO dao = new ProductDAO();
 
        for (CartItem item : cart) {
-        dao.saveOrder(item);
+        dao.saveOrder(item, userId);
 }
 
         reduceStockInDB();
@@ -204,9 +207,10 @@ public void refreshCart() {
         if (productPanel != null) {
             productPanel.loadProducts();
         }
-
+        historyPanel.loadOrders();
         JOptionPane.showMessageDialog(this, "Purchase Successful!");
     }
+    
 }
 
     private void increaseQuantity() {

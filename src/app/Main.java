@@ -4,13 +4,11 @@
  */
 package app;
 
-import shopapp.ui.MainFrame;
+import shopapp.ui.LoginFrame;
 
 public class Main {
     public static void main(String[] args) {
-        // Start the application
-        new MainFrame();
+        new LoginFrame();
     }
 }
-
 
