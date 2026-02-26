@@ -19,7 +19,7 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         setResizable(false);
-        setSize(400, 300);
+        setSize(300, 200);
         setLocationRelativeTo(null);
         setTitle("Login - ShopApp");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,13 +79,18 @@ public class LoginFrame extends JFrame {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-
+              
                 int userId = rs.getInt("id");
+                String role = rs.getString("role");
 
-                JOptionPane.showMessageDialog(this, "Login Successful!");
-
-                new MainFrame(userId);   // pass userId
                 dispose();
+
+                if (role.equals("admin")) {
+                        new AdminFrame();
+                } else {
+                       new MainFrame(userId);
+                }
+                
 
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username or Password");

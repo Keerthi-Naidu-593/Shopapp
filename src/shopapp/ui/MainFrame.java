@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 });
         setTitle("Shop App");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }

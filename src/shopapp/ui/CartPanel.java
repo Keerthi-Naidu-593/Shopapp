@@ -40,6 +40,7 @@ public class CartPanel extends JPanel {
 
         table = new JTable(model);
         table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
         table.setRowHeight(30);
         table.setBackground(Color.WHITE);
         table.setShowGrid(true);
